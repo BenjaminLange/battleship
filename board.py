@@ -57,29 +57,18 @@ class Board():
         ship_size = ship[1]
         location = input("Place the location of the {} ({} spaces): "
                          .format(ship_name, ship_size)).strip().lower()
-        
-
-        try:
-            column, row = location[0], int(location[1:]) - 1
-        except ValueError:
-            print("The row must be a number.")
-            return self.get_location(ship)
-        if column not in 'abcdefghij':
-            print("{} is not a valid column.".format(column))
-            return self.get_location(ship)
-        elif not 0 <= row < self.board_size + 1:
-            print("{} is not a valid row.".format(row))
-            return self.get_location(ship)
-        else:
+        if self.is_valid_location(location):
             horizontal = input("Is it horizontal? (Y)/N: ").strip().lower()
             if horizontal == 'n':
                 horizontal = False
             else:
                 horizontal = True
-            column = Board.COLUMNS.index(column)
-            self.check_placement(column, row, horizontal, ship)
+            self.check_placement(location, horizontal, ship)
+        else:
+            return self.get_location(ship)
 
-    def check_placement(self, column, row, horizontal, ship):
+    def check_placement(self, location, horizontal, ship):
+        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
         ship_name = ship[0]
         ship_size = ship[1]
         if horizontal:
@@ -119,9 +108,12 @@ class Board():
 
     def is_valid_location(self, location):
         try:
-            column, row = location[0], int(location[1:]) - 1
+            column, row = location[0], int(location[1:])
         except ValueError:
             print("The row must be a number.")
+            return False
+        except IndexError:
+            print("Make sure you enter a column and a row!")
             return False
         if column not in 'abcdefghij':
             print("{} is not a valid column.".format(column))
@@ -132,8 +124,34 @@ class Board():
         else:
             return True
 
+    def is_already_guessed(self, location):
+        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        location = self.board[row][column]
+        if(location == Board.HIT or
+           location == Board.MISS or
+           location == Board.SUNK):
+            print("You've already guessed that location!")
+            return True
+        return False
+
     def check_for_hit(self, location):
-        pass
+        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        location = self.board[row][column]
+        if(location == Board.VERTICAL_SHIP or
+           location == Board.HORIZONTAL_SHIP):
+            print("HIT!!")
+            return True
+        else:
+            print("Miss!")
+            return False
+
+    def set_location_hit(self, location):
+        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        self.board[row][column] = Board.HIT
+
+    def set_location_miss(self, location):
+        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        self.board[row][column] = Board.MISS
 
     def check_for_loss(self):
         if self.board.count(Board.HIT) == 17:
