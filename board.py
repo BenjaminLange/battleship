@@ -88,7 +88,7 @@ class Board():
                     self.print_board()
                     return self.get_location(ship)
             for col in range(column, column + ship_size):
-                    self.board[row][col] = Board.HORIZONTAL_SHIP
+                self.board[row][col] = Board.HORIZONTAL_SHIP
         else:
             if row + ship_size > self.board_size:
                 self.clear_screen()
