@@ -79,7 +79,7 @@ class Game():
         print("{}, here is {}'s board..."
               .format(player.name, opponent.name))
         player.hit_miss_board.print_board()
-        if opponent.check_for_loss():
+        if opponent.board.check_for_loss():
             self.game_over(player)
         input("{}, press enter to end your turn...".format(player.name))
 
