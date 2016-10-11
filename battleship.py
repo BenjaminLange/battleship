@@ -1,4 +1,5 @@
 import os
+import sys
 
 from player import Player
 
@@ -60,6 +61,7 @@ class Game():
               .is_valid_location(location) or
               player.hit_miss_board
               .is_already_guessed(location)):
+            input("Press enter to try again...")
             self.clear_screen()
             print("{}, here is {}'s board..."
                   .format(player.name, opponent.name))
@@ -84,11 +86,19 @@ class Game():
         input("{}, press enter to end your turn...".format(player.name))
 
     def game_over(self, player):
+        self.clear_screen()
         print("Congrats {}, you won!!".format(player.name))
-        input("Press enter to see the final boards...")
+        print()
         print("Here are the final boards...")
-        self.player_one.print_board()
-        self.player_two.print_board()
+        print()
+        print("{}'s board:".format(self.player_one.name))
+        print()
+        self.player_one.board.print_board()
+        print()
+        print("{}'s board:".format(self.player_two.name))
+        print()
+        self.player_two.board.print_board()
+        sys.exit()
 
 
 Game()
