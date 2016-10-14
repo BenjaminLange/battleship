@@ -111,7 +111,7 @@ class Board():
 
     def is_valid_location(self, location):
         try:
-            column, row = location[0], int(location[1:])
+            column, row = location[0].lower(), int(location[1:])
         except ValueError:
             print("The row must be a number.")
             return False
@@ -128,7 +128,7 @@ class Board():
             return True
 
     def is_already_guessed(self, location):
-        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        column, row = Board.COLUMNS.index(location[0].lower()), int(location[1:]) - 1
         location = self.board[row][column]
         if(location == Board.HIT or
            location == Board.MISS or
@@ -138,7 +138,7 @@ class Board():
         return False
 
     def check_for_hit(self, location):
-        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        column, row = Board.COLUMNS.index(location[0].lower()), int(location[1:]) - 1
         target = self.board[row][column]
         location = row, column
         if(target == Board.VERTICAL_SHIP or
@@ -153,11 +153,11 @@ class Board():
             return False
 
     def set_location_hit(self, location):
-        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        column, row = Board.COLUMNS.index(location[0].lower()), int(location[1:]) - 1
         self.board[row][column] = Board.HIT
 
     def set_location_miss(self, location):
-        column, row = Board.COLUMNS.index(location[0]), int(location[1:]) - 1
+        column, row = Board.COLUMNS.index(location[0].lower()), int(location[1:]) - 1
         self.board[row][column] = Board.MISS
 
     def check_for_sunk_ship(self, player):
